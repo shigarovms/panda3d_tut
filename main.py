@@ -36,28 +36,31 @@ class MyApp(ShowBase):
 
         # Create the 8 lerp intervals needed for the panda to
         # walk by square.
-        posInterval1 = self.pandaActor.posInterval(3,
-                                                   Point3(10, -10, 0),
-                                                   startPos=Point3(10, 10, 0))
-        posInterval2 = self.pandaActor.posInterval(3,
-                                                   Point3(-10, -10, 0),
-                                                   startPos=Point3(10, -10, 0))
-        posInterval3 = self.pandaActor.posInterval(3,
-                                                   Point3(-10, 10, 0),
-                                                   startPos=Point3(-10, -10, 0))
-        posInterval4 = self.pandaActor.posInterval(3,
-                                                   Point3(10, 10, 0),
-                                                   startPos=Point3(-10, 10, 0))
-        hprInterval1 = self.pandaActor.hprInterval(0.3,
+        SECS_PER_LINE = 1.0
+        SECS_FOR_ROTATE = 0.4
+        SQ_LNTH = 5
+        posInterval1 = self.pandaActor.posInterval(SECS_PER_LINE,
+                                                   Point3(SQ_LNTH, -SQ_LNTH, 0),
+                                                   startPos=Point3(SQ_LNTH, SQ_LNTH, 0))
+        posInterval2 = self.pandaActor.posInterval(SECS_PER_LINE,
+                                                   Point3(-SQ_LNTH, -SQ_LNTH, 0),
+                                                   startPos=Point3(SQ_LNTH, -SQ_LNTH, 0))
+        posInterval3 = self.pandaActor.posInterval(SECS_PER_LINE,
+                                                   Point3(-SQ_LNTH, SQ_LNTH, 0),
+                                                   startPos=Point3(-SQ_LNTH, -SQ_LNTH, 0))
+        posInterval4 = self.pandaActor.posInterval(SECS_PER_LINE,
+                                                   Point3(SQ_LNTH, SQ_LNTH, 0),
+                                                   startPos=Point3(-SQ_LNTH, SQ_LNTH, 0))
+        hprInterval1 = self.pandaActor.hprInterval(SECS_FOR_ROTATE,
                                                    Point3(-90, 0, 0),
                                                    startHpr=Point3(0, 0, 0))
-        hprInterval2 = self.pandaActor.hprInterval(0.3,
+        hprInterval2 = self.pandaActor.hprInterval(SECS_FOR_ROTATE,
                                                    Point3(-180, 0, 0),
                                                    startHpr=Point3(-90, 0, 0))
-        hprInterval3 = self.pandaActor.hprInterval(0.3,
+        hprInterval3 = self.pandaActor.hprInterval(SECS_FOR_ROTATE,
                                                    Point3(-270, 0, 0),
                                                    startHpr=Point3(-180, 0, 0))
-        hprInterval4 = self.pandaActor.hprInterval(0.3,
+        hprInterval4 = self.pandaActor.hprInterval(SECS_FOR_ROTATE,
                                                    Point3(-360, 0, 0),
                                                    startHpr=Point3(-270, 0, 0))
 
@@ -69,19 +72,31 @@ class MyApp(ShowBase):
                                   name="pandaPace")
         self.pandaPace.loop()
 
-        self.movie(namePrefix = 'frames/moviePanda', duration = 1.0, fps = 6,
-              format = 'png', sd = 3, source = None)
+        global REC, VIDEO_DURATION
+
+        if REC == 'on':
+            self.movie(namePrefix = 'mediaContent/framesForMovie/moviePanda', duration = VIDEO_DURATION, fps = 12,
+                  format = 'png', sd = 3, source = None)
 
 
 
     # Define a procedure to move the camera.
+
     def spinCameraTask(self, task):
-        angleDegrees = task.time * 6.0
+        CAMERA_HIGHT = 20
+        CAMERA_DEPTH = 47
+        CAMERA_ANGLE = -22
+        CAMERA_ROTATION_SPEED = 24.0
+        angleDegrees = task.time * CAMERA_ROTATION_SPEED
         angleRadians = angleDegrees * (pi / 180.0)
-        self.camera.setPos(60 * sin(angleRadians), -60 * cos(angleRadians), 3)
-        self.camera.setHpr(angleDegrees, 0, 0)
+        self.camera.setPos(CAMERA_DEPTH * sin(angleRadians), -CAMERA_DEPTH * cos(angleRadians), CAMERA_HIGHT)
+        self.camera.setHpr(angleDegrees, CAMERA_ANGLE, 0)
         return Task.cont
 
 
+REC = 'on'
+VIDEO_DURATION = 5.0
+
 app = MyApp()
 app.run()
+
