@@ -34,8 +34,8 @@ class MyApp(ShowBase):
         # Loop its animation.
         self.pandaActor.loop("walk")
 
-        # Create the four lerp intervals needed for the panda to
-        # walk back and forth.
+        # Create the 8 lerp intervals needed for the panda to
+        # walk by square.
         posInterval1 = self.pandaActor.posInterval(3,
                                                    Point3(10, -10, 0),
                                                    startPos=Point3(10, 10, 0))
@@ -68,6 +68,11 @@ class MyApp(ShowBase):
                                   posInterval4, hprInterval4,
                                   name="pandaPace")
         self.pandaPace.loop()
+
+        self.movie(namePrefix = 'frames/moviePanda', duration = 1.0, fps = 6,
+              format = 'png', sd = 3, source = None)
+
+
 
     # Define a procedure to move the camera.
     def spinCameraTask(self, task):
