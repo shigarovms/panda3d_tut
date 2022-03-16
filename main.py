@@ -1,3 +1,6 @@
+from panda3d.core import loadPrcFile
+loadPrcFile('config/conf.prc')
+
 from math import pi, sin, cos
 
 from direct.showbase.ShowBase import ShowBase
@@ -25,6 +28,11 @@ class MyApp(ShowBase):
 
         # Add the spinCameraTask procedure to the task manager.
         self.taskMgr.add(self.spinCameraTask, "SpinCameraTask")
+
+        # Add the box in the zeros position
+        box = self.loader.loadModel('models/box')
+        box.setScale(3, 3, 2)
+        box.reparentTo(self.render)
 
         # Load and transform the panda actor.
         self.pandaActor = Actor("models/panda-model",
@@ -94,8 +102,8 @@ class MyApp(ShowBase):
         return Task.cont
 
 
-REC = 'on'
-VIDEO_DURATION = 5.0
+REC = 'o'
+VIDEO_DURATION = 10.0
 
 app = MyApp()
 app.run()
